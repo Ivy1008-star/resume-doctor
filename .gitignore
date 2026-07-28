@@ -26,3 +26,6 @@ npm-debug.log*
 
 # wrangler local config and cache
 .wrangler-home/
+
+# npm patching
+.npmpatch/
