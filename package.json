@@ -1,0 +1,24 @@
+{
+  "name": "resume-doctor",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "migrate": "node scripts/migrate-json-to-sqlite.mjs",
+    "smoke": "node scripts/e2e-smoke.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "^0.344.0",
+    "next": "14.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sql.js": "^1.14.1",
+    "undici": "^7.29.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.86.0"
+  }
+}
