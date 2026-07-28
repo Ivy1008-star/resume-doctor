@@ -8,10 +8,6 @@ binding = "resume_doctor_db"
 database_name = "resume-doctor-db"
 database_id = "d86ead03-3f5b-4ed5-b1f0-3fb5fa968d20"
 
-[build]
-command = "npx @cloudflare/next-on-pages"
-upload = { format = "pages-function" }
-
 [vars]
 NEXT_TELEMETRY_DISABLED = "1"
 PRICE_REWRITE = "5"
