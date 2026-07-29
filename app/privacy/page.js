@@ -30,7 +30,7 @@ export default function Privacy() {
           <p>Resume Doctor is not intended for and may not be used by anyone under 16.</p>
 
           <h2>Contact</h2>
-          <p>Questions or complaints: <a href="mailto:support@resumedoctor.example">support@resumedoctor.example</a>. We respond to complaints within 48 hours.</p>
+        <p>Questions or complaints: <a href="mailto:Aokaibo1008@gmail.com">Aokaibo1008@gmail.com</a>. We respond to complaints within 48 hours.</p>
         </div>
       </main>
       <Footer />

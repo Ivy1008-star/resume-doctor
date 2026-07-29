@@ -24,7 +24,7 @@ export default function Terms() {
           <p>Paid features are charged per use via PayPal. If a paid result fails to generate, contact us for a refund. Payment disputes are handled through PayPal&apos;s resolution process.</p>
 
           <h2>Complaints</h2>
-          <p>To report a problem or request human review of AI content, email <a href="mailto:support@resumedoctor.example">support@resumedoctor.example</a>. We respond within 48 hours.</p>
+        <p>To report a problem or request human review of AI content, email <a href="mailto:Aokaibo1008@gmail.com">Aokaibo1008@gmail.com</a>. We respond within 48 hours.</p>
 
           <h2>Eligibility</h2>
           <p>You must be at least 16 years old to use Resume Doctor.</p>

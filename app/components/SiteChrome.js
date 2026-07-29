@@ -52,7 +52,7 @@ export function Footer() {
           <div style={{ display: 'flex', gap: 16 }}>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
-            <a href="mailto:support@resumedoctor.example">Contact / Complaints</a>
+            <a href="mailto:Aokaibo1008@gmail.com">Contact / Complaints</a>
           </div>
         </div>
         <p className="disclaimer">
