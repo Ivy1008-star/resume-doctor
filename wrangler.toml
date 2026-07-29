@@ -3,17 +3,9 @@ compatibility_date = "2025-07-28"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
-[[d1_databases]]
-binding = "resume_doctor_db"
-database_name = "resume-doctor-db"
-database_id = "d86ead03-3f5b-4ed5-b1f0-3fb5fa968d20"
-
-[vars]
-NEXT_TELEMETRY_DISABLED = "1"
-PRICE_REWRITE = "5"
-PRICE_PREMIUM = "10"
-PRICE_MONTHLY = "12"
-DAILY_ANALYSIS_LIMIT = "3"
-DAILY_ANALYSIS_LIMIT_PRO = "30"
-SESSION_SECRET = "cloudflare-session-secret-please-change-in-dashboard"
-PAYPAL_ENV = "sandbox"
+# Environment variables, secrets, and the D1 binding (resume_doctor_db) are
+# configured in the Cloudflare Pages dashboard (Production). They are NOT
+# duplicated here: declaring them in both places makes the deploy fail with
+# "Binding name '...' already in use". The dashboard is the source of truth
+# because it also holds secrets (DEEPSEEK_API_KEY, PAYPAL_CLIENT_SECRET) that
+# must not live in the repo.
