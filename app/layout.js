@@ -11,6 +11,9 @@ export const metadata = {
   alternates: {
     canonical: 'https://resume-doctor.co',
   },
+  verification: {
+    google: 'Ku3_il2U9jOvbBXHLO8z3SpPJEEQikmxvqREcm6kUhQ',
+  },
   openGraph: {
     title: 'Free Resume Diagnosis & Review — Resume Doctor',
     description: 'Free AI resume diagnosis. Get your ATS score, keyword match, and prioritized fixes that get you interviews.',
