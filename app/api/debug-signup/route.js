@@ -49,6 +49,26 @@ export async function GET() {
     const { getRequestContext } = await import('@cloudflare/next-on-pages')
     const db = getRequestContext()?.env?.resume_doctor_db
     setDB(db)
+    // Reproduce the exact INSERT params createEmailUser builds, and log types.
+    try {
+      const c = (await import('node:crypto')).default || (await import('node:crypto'))
+      const e = 'params_' + Date.now() + '@example.com'
+      const name = undefined
+      const s = c.randomBytes(16).toString('hex')
+      const d = c.scryptSync('TestPass123!', s, 64).toString('hex')
+      const ph = 'scrypt$' + s + '$' + d
+      const id = globalThis.crypto.randomUUID()
+      const params = [id, e, name || null, ph, Date.now()]
+      out.insertParamTypes = params.map((x) => (x === undefined ? 'UNDEFINED' : x === null ? 'null' : typeof x))
+      out.phType = typeof ph
+      out.phSample = ph.slice(0, 12)
+      try {
+        await db.prepare('INSERT INTO users(id,sub,email,name,picture,password_hash,created_at) VALUES(?,NULL,?,?,NULL,?,?)').bind(...params).run()
+        out.reproInsert = 'ok'
+        await db.prepare('DELETE FROM users WHERE id=?').bind(id).run()
+      } catch (e2) { out.reproInsertErr = String(e2?.message || e2) }
+    } catch (e3) { out.reproSetupErr = String(e3?.message || e3) }
+
     const email = 'store_' + Date.now() + '@example.com'
     try {
       const res = await createEmailUser({ email, name: 'StoreDbg', password: 'TestPass123!' })
