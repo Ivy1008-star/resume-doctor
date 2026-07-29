@@ -45,11 +45,12 @@ export default function Home() {
       <main>
         <section className="hero">
           <div className="container-narrow center">
-            <span className="eyebrow"><Stethoscope size={14} /> Free AI resume review</span>
-            <h1>Get an instant <span className="accent">resume review</span></h1>
+            <span className="eyebrow"><Stethoscope size={14} /> Free AI resume diagnosis &amp; ATS check</span>
+            <h1>Free <span className="accent">resume diagnosis</span> &amp; review</h1>
             <p className="sub">
-              Paste your resume and a job description for a free AI resume review. In
-              seconds, get your ATS score, keyword match, and the exact, recruiter-grade
+              Resume Doctor examines your resume the way a recruiter and an ATS do, then
+              hands you a clear diagnosis — completely free. Paste your resume and a job
+              description, and in seconds see your ATS score, keyword match, and the exact
               fixes standing between you and the interview.
             </p>
           </div>
