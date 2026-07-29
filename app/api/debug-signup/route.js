@@ -43,5 +43,19 @@ export async function GET() {
     }
   } catch (e) { out.dbProbeErr = String(e?.message || e) }
 
+  // Now exercise the ACTUAL store path (createEmailUser) to reproduce the bug.
+  try {
+    const { setDB, createEmailUser } = await import('../../../lib/d1-store.js')
+    const { getRequestContext } = await import('@cloudflare/next-on-pages')
+    const db = getRequestContext()?.env?.resume_doctor_db
+    setDB(db)
+    const email = 'store_' + Date.now() + '@example.com'
+    try {
+      const res = await createEmailUser({ email, name: 'StoreDbg', password: 'TestPass123!' })
+      out.storeCreate = res?.error ? { error: res.error } : { userId: res?.user?.id, email: res?.user?.email }
+      if (res?.user?.id) await db.prepare('DELETE FROM users WHERE id=?').bind(res.user.id).run()
+    } catch (e) { out.storeCreateErr = String(e?.message || e); out.storeCreateStack = String(e?.stack || '').slice(0, 400) }
+  } catch (e) { out.storeProbeErr = String(e?.message || e) }
+
   return NextResponse.json(out)
 }
