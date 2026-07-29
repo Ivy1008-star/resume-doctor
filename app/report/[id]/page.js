@@ -107,11 +107,12 @@ export default function ReportPage({ params }) {
           {!paid ? (
             <div className="paywall mt-6">
               <h3>Unlock your ATS-optimized rewrite</h3>
-              <p>Turn this diagnosis into a resume built to pass the filter — with every change explained.</p>
+              <p>Turn this diagnosis into a resume built to pass the filter — with every change explained. Rewrite and Premium are <strong>one-time payments</strong> for this report; Pro is a <strong>monthly subscription</strong> that unlocks every report.</p>
               <div className="price-row">
                 <div className="price-card">
                   <div className="tag">REWRITE</div>
-                  <div className="amt">${priceRewrite}</div>
+                  <div className="amt">${priceRewrite}<span style={{ fontSize: 14, fontWeight: 500 }}>&nbsp;one-time</span></div>
+                  <div className="price-note">Pay once for this report</div>
                   <ul>
                     <li>Full ATS-optimized resume</li>
                     <li>Before/after keyword coverage</li>
@@ -122,7 +123,8 @@ export default function ReportPage({ params }) {
                 </div>
                 <div className="price-card pop">
                   <div className="tag">PREMIUM</div>
-                  <div className="amt">${pricePremium}</div>
+                  <div className="amt">${pricePremium}<span style={{ fontSize: 14, fontWeight: 500 }}>&nbsp;one-time</span></div>
+                  <div className="price-note">Pay once for this report</div>
                   <ul>
                     <li>Everything in Rewrite</li>
                     <li>5 predicted interview questions</li>
@@ -134,6 +136,7 @@ export default function ReportPage({ params }) {
                 <div className="price-card">
                   <div className="tag">PRO / MONTHLY</div>
                   <div className="amt">${priceMonthly}<span style={{ fontSize: 14, fontWeight: 500 }}>/mo</span></div>
+                  <div className="price-note">Recurring monthly · cancel anytime</div>
                   <ul>
                     <li>Everything in Premium</li>
                     <li>Unlimited rewrites on every report</li>
@@ -163,8 +166,8 @@ export default function ReportPage({ params }) {
                 </>
               ) : (
                 <div className="paywall mt-4">
-                  <h3>Add interview prep — ${pricePremium - priceRewrite} upgrade</h3>
-                  <p>Predict the 5 questions HR will likely ask, plus your resume&apos;s red flags.</p>
+                  <h3>Add interview prep — ${pricePremium - priceRewrite} one-time upgrade</h3>
+                  <p>A single one-time payment to predict the 5 questions HR will likely ask, plus your resume&apos;s red flags.</p>
                   <div style={{ maxWidth: 320, margin: '0 auto' }}>
                     <PayButton cfg={cfg} tier="premium" amount={pricePremium} label="Upgrade to premium" onPaid={handlePaid} />
                   </div>
