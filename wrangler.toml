@@ -3,9 +3,15 @@ compatibility_date = "2025-07-28"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
-# Environment variables, secrets, and the D1 binding (resume_doctor_db) are
-# configured in the Cloudflare Pages dashboard (Production). They are NOT
-# duplicated here: declaring them in both places makes the deploy fail with
-# "Binding name '...' already in use". The dashboard is the source of truth
-# because it also holds secrets (DEEPSEEK_API_KEY, PAYPAL_CLIENT_SECRET) that
-# must not live in the repo.
+# Plain-text env vars and secrets live in the Cloudflare Pages dashboard
+# (Production) and are intentionally NOT duplicated here: declaring the same
+# name in both places makes the deploy fail with "Binding name '...' already
+# in use". The dashboard is the source of truth for vars/secrets.
+#
+# The D1 binding, however, is only defined here (the dashboard has none), so it
+# must stay or the Worker falls back to the Node-only local store and fails at
+# runtime with 'No such module local-store.js'.
+[[d1_databases]]
+binding = "resume_doctor_db"
+database_name = "resume-doctor-db"
+database_id = "d86ead03-3f5b-4ed5-b1f0-3fb5fa968d20"
