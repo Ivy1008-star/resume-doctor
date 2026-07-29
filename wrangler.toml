@@ -3,14 +3,30 @@ compatibility_date = "2025-07-28"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
-# Plain-text env vars and secrets live in the Cloudflare Pages dashboard
-# (Production) and are intentionally NOT duplicated here: declaring the same
-# name in both places makes the deploy fail with "Binding name '...' already
-# in use". The dashboard is the source of truth for vars/secrets.
-#
-# The D1 binding, however, is only defined here (the dashboard has none), so it
-# must stay or the Worker falls back to the Node-only local store and fails at
-# runtime with 'No such module local-store.js'.
+# Non-secret runtime config lives here (version-controlled) because the
+# Cloudflare API token used for deploys can only write *secret* env vars to the
+# dashboard, not plain-text ones. Secrets (DEEPSEEK_API_KEY,
+# PAYPAL_CLIENT_SECRET, SESSION_SECRET) stay in the Pages dashboard and must NOT
+# be duplicated here, or the deploy fails with "Binding name '...' already in
+# use". The dashboard production config has no plain-text vars, so this block is
+# conflict-free.
+[vars]
+DEEPSEEK_BASE = "https://api.deepseek.com"
+DEEPSEEK_MODEL = "deepseek-v4-flash"
+NEXT_PUBLIC_GOOGLE_CLIENT_ID = "1011816257095-ibknprbj6jj5cgip8mg0s1gh0ffkhkvo.apps.googleusercontent.com"
+NEXT_PUBLIC_PAYPAL_CLIENT_ID = "AVFhlbBBObpKd0Wfn_KVQFjknvYa81l2bMtueSd_IiQBp-9kkL6Wvi7DvUbPy7cSFbUYpbNC0P7_EsXM"
+PAYPAL_ENV = "sandbox"
+PAYPAL_PLAN_ID = "P-77L66464P4218311PNJTVW6A"
+PRICE_REWRITE = "5"
+PRICE_PREMIUM = "10"
+PRICE_MONTHLY = "12"
+DAILY_ANALYSIS_LIMIT = "3"
+DAILY_ANALYSIS_LIMIT_PRO = "30"
+NEXT_TELEMETRY_DISABLED = "1"
+
+# The D1 binding is only defined here (the dashboard has none), so it must stay
+# or the Worker falls back to the Node-only local store and fails at runtime
+# with 'No such module local-store.js'.
 [[d1_databases]]
 binding = "resume_doctor_db"
 database_name = "resume-doctor-db"
