@@ -3,7 +3,7 @@ import { getSession } from '../../../lib/session'
 import { verifySubscription, cancelSubscription } from '../../../lib/paypal'
 import { upsertSubscription, getSubscription, setSubscriptionStatus, recordPayment } from '../../../lib/store'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 const PLAN_ID = process.env.PAYPAL_PLAN_ID || ''
 const PRICE_MONTHLY = Number(process.env.PRICE_MONTHLY || 12)
@@ -11,7 +11,7 @@ const PRICE_MONTHLY = Number(process.env.PRICE_MONTHLY || 12)
 // Activate a subscription after the buyer approves it in the PayPal button.
 export async function POST(req) {
   try {
-    const session = getSession()
+    const session = await getSession()
     if (!session) return NextResponse.json({ error: 'auth_required' }, { status: 401 })
     const { subscriptionId } = await req.json()
     if (!subscriptionId) return NextResponse.json({ error: 'Missing subscriptionId' }, { status: 400 })
@@ -44,7 +44,7 @@ export async function POST(req) {
 // Cancel the current user's subscription.
 export async function DELETE() {
   try {
-    const session = getSession()
+    const session = await getSession()
     if (!session) return NextResponse.json({ error: 'auth_required' }, { status: 401 })
     const sub = await getSubscription(session.id)
     if (!sub) return NextResponse.json({ error: 'No subscription' }, { status: 404 })

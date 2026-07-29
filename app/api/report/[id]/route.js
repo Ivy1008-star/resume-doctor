@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server'
 import { getReport } from '../../../../lib/store'
 import { getSession } from '../../../../lib/session'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 export async function GET(req, { params }) {
-  const session = getSession()
+  const session = await getSession()
   if (!session) return NextResponse.json({ error: 'auth_required' }, { status: 401 })
   const report = await getReport(params.id)
   if (!report) return NextResponse.json({ error: 'not_found' }, { status: 404 })

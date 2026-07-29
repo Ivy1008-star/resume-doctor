@@ -3,7 +3,7 @@ import { runDiagnosis } from '../../../lib/deepseek'
 import { createReport, checkAndConsumeQuota, isProUser } from '../../../lib/store'
 import { getSession } from '../../../lib/session'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 const MAX_LEN = 20000
 const DAILY_LIMIT = Number(process.env.DAILY_ANALYSIS_LIMIT || 3)
@@ -24,7 +24,7 @@ export async function POST(req) {
     const safeResume = String(resume).slice(0, MAX_LEN)
     const safeJd = jd ? String(jd).slice(0, MAX_LEN) : ''
 
-    const session = getSession()
+    const session = await getSession()
     const pro = session?.id ? await isProUser(session.id) : false
     const identity = session?.id ? `user:${session.id}` : `ip:${clientIp(req)}`
     const limit = pro ? DAILY_LIMIT_PRO : DAILY_LIMIT

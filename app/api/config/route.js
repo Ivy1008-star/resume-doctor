@@ -3,7 +3,7 @@ import { hasRealAi } from '../../../lib/deepseek'
 import { googleConfigured } from '../../../lib/google'
 import { paypalConfigured } from '../../../lib/paypal'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 export async function GET() {
   return NextResponse.json({

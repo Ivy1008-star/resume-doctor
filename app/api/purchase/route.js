@@ -4,14 +4,14 @@ import { getSession } from '../../../lib/session'
 import { verifyOrder } from '../../../lib/paypal'
 import { runRewrite, runInterview } from '../../../lib/deepseek'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 const PRICE_REWRITE = Number(process.env.PRICE_REWRITE || 5)
 const PRICE_PREMIUM = Number(process.env.PRICE_PREMIUM || 10)
 
 export async function POST(req) {
   try {
-    const session = getSession()
+    const session = await getSession()
     if (!session) return NextResponse.json({ error: 'auth_required' }, { status: 401 })
     const { reportId, tier, orderId } = await req.json()
     if (!['rewrite', 'premium'].includes(tier)) {

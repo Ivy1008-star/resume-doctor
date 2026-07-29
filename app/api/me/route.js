@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server'
 import { getSession } from '../../../lib/session'
 import { listReportsByUser, deleteUserData, getSubscription, isProUser } from '../../../lib/store'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 export async function GET() {
-  const session = getSession()
+  const session = await getSession()
   if (!session) return NextResponse.json({ user: null })
   const sub = await getSubscription(session.id)
   return NextResponse.json({
@@ -19,7 +19,7 @@ export async function GET() {
 }
 
 export async function DELETE() {
-  const session = getSession()
+  const session = await getSession()
   if (!session) return NextResponse.json({ error: 'auth_required' }, { status: 401 })
   await deleteUserData(session.id)
   return NextResponse.json({ ok: true })

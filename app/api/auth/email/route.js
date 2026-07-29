@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { createEmailUser, verifyEmailUser, attachUser } from '../../../../lib/store'
 import { createSessionCookie } from '../../../../lib/session'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -30,7 +30,7 @@ export async function POST(req) {
       }
     }
 
-    createSessionCookie(user)
+    await createSessionCookie(user)
     if (reportId) await attachUser(reportId, user.id)
     return NextResponse.json({ ok: true, user: { name: user.name, email: user.email, picture: user.picture } })
   } catch (err) {
