@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Loader2, Lock } from 'lucide-react'
+import { loadPayPal } from './paypalLoader'
 
 // Renders PayPal Smart Buttons when configured, otherwise a simulated pay button.
 export default function PayButton({ cfg, tier, amount, label, onPaid }) {
@@ -25,24 +26,22 @@ export default function PayButton({ cfg, tier, amount, label, onPaid }) {
   useEffect(() => {
     if (!cfg || !cfg.paypal || !cfg.paypalClientId || loadedRef.current) return
     loadedRef.current = true
-    const script = document.createElement('script')
-    script.src = `https://www.paypal.com/sdk/js?client-id=${cfg.paypalClientId}&currency=USD`
-    script.async = true
-    script.onload = () => {
-      if (!window.paypal || !ref.current) return
-      window.paypal.Buttons({
-        style: { layout: 'horizontal', color: 'blue', shape: 'rect', label: 'pay', height: 44 },
-        createOrder: (data, actions) => actions.order.create({
-          purchase_units: [{ amount: { value: String(amount) }, description: `Resume Doctor — ${tier}` }],
-        }),
-        onApprove: async (data, actions) => {
-          await actions.order.capture()
-          await settle(data.orderID)
-        },
-        onError: () => setErr('PayPal error. Please try again.'),
-      }).render(ref.current)
-    }
-    document.body.appendChild(script)
+    loadPayPal({ clientId: cfg.paypalClientId, mode: 'capture' })
+      .then((paypal) => {
+        if (!paypal || !ref.current) return
+        paypal.Buttons({
+          style: { layout: 'horizontal', color: 'blue', shape: 'rect', label: 'pay', height: 44 },
+          createOrder: (data, actions) => actions.order.create({
+            purchase_units: [{ amount: { value: String(amount) }, description: `Resume Doctor — ${tier}` }],
+          }),
+          onApprove: async (data, actions) => {
+            await actions.order.capture()
+            await settle(data.orderID)
+          },
+          onError: () => setErr('PayPal error. Please try again.'),
+        }).render(ref.current)
+      })
+      .catch(() => setErr('Could not load PayPal. Please refresh and try again.'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cfg])
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Loader2, Crown } from 'lucide-react'
+import { loadPayPal } from './paypalLoader'
 
 // Renders a PayPal subscription button when a plan id is configured, otherwise
 // a simulated (demo) subscribe button so the flow is testable without creds.
@@ -28,19 +29,17 @@ export default function SubscribeButton({ cfg, onActive }) {
   useEffect(() => {
     if (!liveReady || loadedRef.current) return
     loadedRef.current = true
-    const script = document.createElement('script')
-    script.src = `https://www.paypal.com/sdk/js?client-id=${cfg.paypalClientId}&vault=true&intent=subscription`
-    script.async = true
-    script.onload = () => {
-      if (!window.paypal || !ref.current) return
-      window.paypal.Buttons({
-        style: { layout: 'horizontal', color: 'gold', shape: 'rect', label: 'subscribe', height: 44 },
-        createSubscription: (data, actions) => actions.subscription.create({ plan_id: cfg.paypalPlanId }),
-        onApprove: async (data) => { await settle(data.subscriptionID) },
-        onError: () => setErr('PayPal error. Please try again.'),
-      }).render(ref.current)
-    }
-    document.body.appendChild(script)
+    loadPayPal({ clientId: cfg.paypalClientId, mode: 'subscription' })
+      .then((paypal) => {
+        if (!paypal || !ref.current) return
+        paypal.Buttons({
+          style: { layout: 'horizontal', color: 'gold', shape: 'rect', label: 'subscribe', height: 44 },
+          createSubscription: (data, actions) => actions.subscription.create({ plan_id: cfg.paypalPlanId }),
+          onApprove: async (data) => { await settle(data.subscriptionID) },
+          onError: () => setErr('PayPal error. Please try again.'),
+        }).render(ref.current)
+      })
+      .catch(() => setErr('Could not load PayPal. Please refresh and try again.'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveReady])
 

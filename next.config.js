@@ -11,16 +11,18 @@ const nextConfig = {
   // edge target otherwise throws "Unhandled scheme" for `node:crypto`, so we
   // mark those builtins external and let the runtime resolve them.
   webpack: (config, { nextRuntime }) => {
-    if (nextRuntime === 'edge') {
-      const builtins = ['crypto', 'buffer', 'events', 'util', 'stream', 'async_hooks']
-      const externals = {}
-      for (const name of builtins) {
-        externals[`node:${name}`] = `commonjs node:${name}`
-      }
-      config.externals = Array.isArray(config.externals)
-        ? [...config.externals, externals]
-        : [config.externals, externals].filter(Boolean)
+    // Mark node:* builtins external for ALL webpack compilations (edge,
+    // nodejs/RSC, and dynamically-loaded chunks). Without this, the edge
+    // sandbox rejects "Native module not found: node:crypto" and the RSC
+    // build throws "A dynamic import callback was not specified".
+    const builtins = ['crypto', 'buffer', 'events', 'util', 'stream', 'async_hooks']
+    const externals = {}
+    for (const name of builtins) {
+      externals[`node:${name}`] = `commonjs node:${name}`
     }
+    config.externals = Array.isArray(config.externals)
+      ? [...config.externals, externals]
+      : [config.externals, externals].filter(Boolean)
     return config
   },
 }
